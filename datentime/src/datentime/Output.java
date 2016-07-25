@@ -33,35 +33,36 @@ public class Output {
 		Calendar c2 = Calendar.getInstance();
 		c2.setTime(tempdate2);
 		
-		int monthdiff = c2.get(Calendar.MONTH) - c1.get(Calendar.MONTH);
-		
-		if(monthdiff > 0){
-			System.out.println("Last day(s) of month:");
-			c1.add(Calendar.MONTH, 1);  
-	        c1.set(Calendar.DAY_OF_MONTH, 1);
-			c1.add(Calendar.DATE, -1);
+		//Print all last day of month
+		System.out.println("Last day(s) of month:");
+		c1.set(Calendar.DAY_OF_MONTH, c1.getActualMaximum(Calendar.DAY_OF_MONTH));
+		while(c2.after(c1)){
+			c1.set(Calendar.DAY_OF_MONTH, c1.getActualMaximum(Calendar.DAY_OF_MONTH));
 			System.out.println(dateFormat.format(c1.getTime()));
-			//Loop to print last day of months
-			for(int i = 2; i<=monthdiff; i++){
-				c1.add(Calendar.MONTH, 2);  
-		        c1.set(Calendar.DAY_OF_MONTH, 1);
-				c1.add(Calendar.DATE, -1);
-				System.out.println(dateFormat.format(c1.getTime()));
-			}
+			c1.add(Calendar.MONTH, 1);
+		}
+		if(c2.equals(c1)){
+			c1.set(Calendar.DAY_OF_MONTH, c1.getActualMaximum(Calendar.DAY_OF_MONTH));
+			System.out.println(dateFormat.format(c1.getTime()));
 		}
 		
+		//Reset calendar instances to entered dates
 		c1.setTime(tempdate1);
 		c2.setTime(tempdate2);
 		
-		System.out.println("Sundays between dates:");
-		if(c1.get(Calendar.DAY_OF_WEEK) == 1)
+		//Print all Sundays between entered dates
+		System.out.println("All Sundays between entered dates:");
+		if(c1.get(Calendar.DAY_OF_WEEK) != 1)
+			c1.add(Calendar.DAY_OF_WEEK, (8-c1.get(Calendar.DAY_OF_WEEK)));
+		while(c2.after(c1)){
 			System.out.println(dateFormat.format(c1.getTime()));
-		while((c2.get(Calendar.WEEK_OF_YEAR) - c1.get(Calendar.WEEK_OF_YEAR)) > 0){
-			c1.add(Calendar.WEEK_OF_YEAR, 1);
-			c1.add( Calendar.DAY_OF_WEEK, -(c1.get(Calendar.DAY_OF_WEEK)-1));
+			c1.add(Calendar.DAY_OF_WEEK, (8-c1.get(Calendar.DAY_OF_WEEK)));
+			//c1.add(Calendar.WEEK_OF_YEAR, 1);
+			//System.out.println("week add"+dateFormat.format(c1.getTime()));
+		}
+		if(c2.equals(c1)){
 			System.out.println(dateFormat.format(c1.getTime()));
 		}
-
 	}
 
 }
